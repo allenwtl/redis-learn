@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 public class RedisTemplateSetTest {
@@ -17,8 +18,8 @@ public class RedisTemplateSetTest {
 
     @Test
     public void testSETAdd(){
-        String key = "allen.set.add";
-        redisTemplate.opsForSet().add(key, "113", "111", "3454", 5);
+        String key = "allen.set.add3";
+        redisTemplate.opsForSet().add(key, "11", "111", "344");
     }
 
     @Test
@@ -31,66 +32,78 @@ public class RedisTemplateSetTest {
     @Test
     public void testSETPop(){
         String key = "allen.set.add";
-        redisTemplate.opsForSet().pop(key, 1);
+        List values = redisTemplate.opsForSet().pop(key, 1);
+        System.out.println(values);
     }
 
     @Test
     public void testSETMove(){
-        testSETAdd();
+//        testSETAdd();
         String key = "allen.set.add";
-        String destKey = "allen.set.add2";
-        redisTemplate.opsForSet().move(key, 5, destKey);
+        String destKey = "allen.set.add3";
+        Boolean moved = redisTemplate.opsForSet().move(key, 5, destKey);
+        System.out.println(moved);
     }
 
     @Test
     public void testSETSize(){
         String key = "allen.set.add";
-        redisTemplate.opsForSet().size(key);
+        Long size = redisTemplate.opsForSet().size(key);
+        System.out.println(size);
     }
 
     @Test
     public void testSETIsMember(){
         String key = "allen.set.add";
-        Object o = "123";
-        redisTemplate.opsForSet().isMember(key, o);
+        Object o = "111";
+        Boolean isMember = redisTemplate.opsForSet().isMember(key, o);
+        System.out.println(isMember);
     }
 
     @Test
     public void testSETIntersect(){
         String key = "allen.set.add";
-        String otherKey = "123";
-        redisTemplate.opsForSet().intersect(key, otherKey);
-
-        List<String> otherKeys = new ArrayList<>();
-        redisTemplate.opsForSet().intersect(key, otherKeys);
+        String otherKey = "allen.set.add3";
+        Set values = redisTemplate.opsForSet().intersect(key, otherKey);
+        System.out.println(values);
+//        List<String> otherKeys = new ArrayList<>();
+//        redisTemplate.opsForSet().intersect(key, otherKeys);
     }
 
     @Test
     public void testSETUnion(){
         String key = "allen.set.add";
-        String otherKey = "";
-        redisTemplate.opsForSet().union(key, otherKey);
+        String otherKey = "allen.set.add3";
+        Set values = redisTemplate.opsForSet().union(key, otherKey);
+        System.out.println(values);
     }
 
     @Test
     public void testSETUnionAndStore(){
         String key = "allen.set.add";
-        String otherKey = "";
-        String destKey = "";
-        redisTemplate.opsForSet().unionAndStore(key, otherKey, destKey);
+        String otherKey = "allen.set.add3";
+        String destKey = "allen.set.add.union.store";
+        Long result = redisTemplate.opsForSet().unionAndStore(key, otherKey, destKey);
+        System.out.println(result);
     }
 
     @Test
     public void testSETDifference(){
         String key = "allen.set.add";
-        String otherKey = "";
-        redisTemplate.opsForSet().difference(key, otherKey);
+        String otherKey = "allen.set.add3";;
+        Set values = redisTemplate.opsForSet().difference(key, otherKey);
+        System.out.println(values);
     }
 
     @Test
     public void testSETMembers(){
         String key = "allen.set.add";
-        redisTemplate.opsForSet().members(key);
+        Set values = redisTemplate.opsForSet().members(key);
+        System.out.println(key+"="+values);
+
+        key = "allen.set.add3";
+        values = redisTemplate.opsForSet().members(key);
+        System.out.println(key+"="+values);
     }
 
     @Test
@@ -100,4 +113,10 @@ public class RedisTemplateSetTest {
         System.out.println(values);
     }
 
+    @Test
+    public void testSETDistinctRandomMembers(){
+        String key = "allen.set.add";
+        Set values = redisTemplate.opsForSet().distinctRandomMembers(key, 4);
+        System.out.println(values);
+    }
 }
