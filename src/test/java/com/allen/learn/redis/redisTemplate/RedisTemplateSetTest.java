@@ -1,4 +1,4 @@
-package com.allen.learn.redis;
+package com.allen.learn.redis.redisTemplate;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
